@@ -1,0 +1,36 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Schedule {
+  createdAt    DateTime  @default(now())
+  id           String    @id @default(cuid())
+  postDateTime DateTime?
+  updatedAt    DateTime  @updatedAt
+  video        Video?    @relation(fields: [videoId], references: [id])
+  videoId      String?
+}
+
+model Video {
+  createdAt DateTime   @default(now())
+  hashtags  String?
+  id        String     @id @default(cuid())
+  name      String?
+  path      String?
+  schedules Schedule[]
+  updatedAt DateTime   @updatedAt
+}
+
+model TikTokAccount {
+  accessToken String?
+  createdAt   DateTime @default(now())
+  id          String   @id @default(cuid())
+  password    String?
+  updatedAt   DateTime @updatedAt
+  username    String?
+}
